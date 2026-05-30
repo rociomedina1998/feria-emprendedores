@@ -1,6 +1,8 @@
 package com.feria.servicios;
 
 import com.feria.modelos.*;
+import com.feria.utils.IValidadorEmprendedor;
+import com.feria.utils.Validadores;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +11,17 @@ public class GestorFeria {
     public List<Emprendedor> emprendedores;
     public List<Producto> productos;
     public List<Venta> ventas;
+    private final IValidadorEmprendedor validador;
 
-    public GestorFeria() {
+    public GestorFeria(IValidadorEmprendedor validador) {
+        this.validador = validador;
         emprendedores = new ArrayList<>();
         productos = new ArrayList<>();
         ventas = new ArrayList<>();
+    }
+
+    public GestorFeria() {
+        this(new Validadores());
     }
 
     public void registrarEmprendedorConProductos(String nombre, String id, String telefono, 
@@ -24,11 +32,11 @@ public class GestorFeria {
 
         Emprendedor e = new Emprendedor(nombre, id, telefono, email, categoria);
 
-        if (nombre == null || nombre.length() < 2) {
+        if (!validador.validarNombre(nombre)) {
             System.out.println("Error: nombre inválido");
             return;
         }
-        if (email == null || !email.contains("@")) {
+        if (!validador.validarEmail(email)) {
             System.out.println("Error: email inválido");
             return;
         }

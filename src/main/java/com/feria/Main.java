@@ -18,9 +18,9 @@ public class Main {
             Arrays.asList(50, 10, 100)
         );
 
-        Emprendedor emp2 = new Emprendedor("Carlos", "E002", "3423987654", "carlos@hotmail.com", "artesania");
-        Producto p1 = new Producto("Collar", 2000.0, 5, "artesania", "E002");
-        Producto p2 = new Producto("Pulsera", 800.0, 20, "artesania", "E002");
+        Emprendedor emp2 = new Emprendedor("Carlos", "E002", "3423987654", "carlos@hotmail.com", "artesanía");
+        Producto p1 = new Producto("Collar", 2000.0, 5, "artesanía", "E002");
+        Producto p2 = new Producto("Pulsera", 800.0, 20, "artesanía", "E002");
         emp2.agregarProducto(p1);
         emp2.agregarProducto(p2);
         gestor.emprendedores.add(emp2);

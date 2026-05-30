@@ -1,5 +1,6 @@
 package com.feria.modelos;
 
+import com.feria.utils.Validadores;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,14 +33,13 @@ public class Emprendedor {
         info += "Categoría: " + cat + "\n";
 
         // VALIDACIONES
-        if (n == null || n.length() < 2) {
+        if (!Validadores.nombreValido(n)) {
             info += "⚠️ NOMBRE DEMASIADO CORTO\n";
         }
-        if (m == null || !m.contains("@")) {
+        if (!Validadores.emailValido(m)) {
             info += "⚠️ EMAIL INVÁLIDO\n";
         }
-        if (cat == null || (!cat.equals("comida") && !cat.equals("artesania") && 
-                           !cat.equals("tecnologia") && !cat.equals("ropa"))) {
+        if (!Validadores.categoriaPermitida(cat)) {
             info += "⚠️ CATEGORÍA DESCONOCIDA\n";
         }
 
@@ -53,14 +53,8 @@ public class Emprendedor {
 
 
     public boolean validarCompleto() {
-        boolean valido = true;
-        if (n == null || n.length() < 2) valido = false;
-        if (m == null || !m.contains("@")) valido = false;
-        if (cat == null || (!cat.equals("comida") && !cat.equals("artesania") && 
-                           !cat.equals("tecnologia") && !cat.equals("ropa"))) valido = false;
-        return valido;
+        return Validadores.validarEmprendedorCompleto(this);
     }
-
 
     public String getNombre() {
         return n;
