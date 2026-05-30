@@ -7,13 +7,14 @@ public class Producto {
     private String nombre;
     private double precio;
     private int stock;
+    private Emprendedor emprendedor;
     
 
-    public Producto(String nombre, double precio, int stock) {
+    public Producto(String nombre, double precio, int stock, Emprendedor emprendedor) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
-        
+        this.emprendedor = emprendedor;
     }
 
     public String getNombre() {
@@ -40,6 +41,14 @@ public void setStock(int stock) {
     this.stock = stock;
 }
 
+ public Emprendedor getEmprendedor() {
+        return emprendedor;
+    }
+
+    public void setEmprendedor(Emprendedor emprendedor) {
+        this.emprendedor = emprendedor;
+    }
+
     public double valorTotal() {
         return precio * stock;
     }
@@ -56,6 +65,7 @@ public void setStock(int stock) {
         }
         return false;
     }
+    
 
 
   

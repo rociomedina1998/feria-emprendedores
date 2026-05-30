@@ -36,8 +36,8 @@ public class Main {
 
         reportes.imprimirResumenEjecutivo(gestor);
 
-        System.out.println("Emprendedor Ana válido? " + Validadores.validarCompleto(gestor.emprendedores.get(0)));
+        System.out.println("Emprendedor Ana válido? " + Validadores.validarCompleto(gestor.emprendedores.get(0))); 
+        System.out.println(gestor.emprendedores.get(0).mostrarInfo())
 
-        System.out.println(gestor.emprendedores.get(0).mostrarInfo());
-    }
-}
+    };
+}   
