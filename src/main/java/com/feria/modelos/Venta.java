@@ -2,23 +2,79 @@ package com.feria.modelos;
 
 public class Venta {
 
-    public String idVenta;
-    public String emprendedorId;
-    public String productoNombre;
-    public int cantidad;
-    public double precioUnitario;
-    public String fecha;
-    public boolean pagoRealizado;
+    private String idVenta;
+    private String emprendedorId;
+    private String productoNombre;
+    private int cantidad;
+    private double precioUnitario;
+    private String fecha;
+    private boolean pagoRealizado;
 
-    public Venta(String idVenta, String empId, String prodNombre, int cant, double precioUnit, String fecha) {
+    public Venta(String idVenta, String emprendedorId, String productoNombre, int cantidad, double precioUnitario, String fecha) {
         this.idVenta = idVenta;
-        this.emprendedorId = empId;
-        this.productoNombre = prodNombre;
-        this.cantidad = cant;
-        this.precioUnitario = precioUnit;
+        this.emprendedorId = emprendedorId;
+        this.productoNombre = productoNombre;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
         this.fecha = fecha;
         this.pagoRealizado = false;
     }
+
+    public String getIdVenta() {
+    return idVenta;
+}
+
+public void setIdVenta(String idVenta) {
+    this.idVenta = idVenta;
+}
+
+public String getEmprendedorId() {
+    return emprendedorId;
+}
+
+public void setEmprendedorId(String emprendedorId) {
+    this.emprendedorId = emprendedorId;
+}
+
+public String getProductoNombre() {
+    return productoNombre;
+}
+
+public void setProductoNombre(String productoNombre) {
+    this.productoNombre = productoNombre;
+}
+
+public int getCantidad() {
+    return cantidad;
+}
+
+public void setCantidad(int cantidad) {
+    this.cantidad = cantidad;
+}
+
+public double getPrecioUnitario() {
+    return precioUnitario;
+}
+
+public void setPrecioUnitario(double precioUnitario) {
+    this.precioUnitario = precioUnitario;
+}
+
+public String getFecha() {
+    return fecha;
+}
+
+public void setFecha(String fecha) {
+    this.fecha = fecha;
+}
+
+public boolean isPagoRealizado() {
+    return pagoRealizado;
+}
+
+public void setPagoRealizado(boolean pagoRealizado) {
+    this.pagoRealizado = pagoRealizado;
+}
 
     public double calcularTotalConDescuento() {
         double total = cantidad * precioUnitario;
@@ -34,12 +90,16 @@ public class Venta {
         return total;
     }
 
-    public void registrarPagoYActualizarStock(Producto p) {
+    public void registrarPago(Producto p) {
         this.pagoRealizado = true;
+        System.out.println("Pago registrado");
+    }
+
+    public void actualizarStock(Producto p) {
         if (p != null) {
             p.stock = p.stock - this.cantidad;
         }
-        System.out.println("Pago registrado y stock actualizado");
+        System.out.println("Stock actualizado: " + p.stock);
     }
 
     public String generarRecibo() {
