@@ -8,10 +8,10 @@ import java.util.List;
 
 public class GestorFeria {
 
-    public List<Emprendedor> emprendedores;
-    public List<Producto> productos;
-    public List<Venta> ventas;
     private final IValidadorEmprendedor validador;
+    private List<Emprendedor> emprendedores;
+    private List<Producto> productos;
+    private List<Venta> ventas;
 
     public GestorFeria(IValidadorEmprendedor validador) {
         this.validador = validador;
@@ -24,7 +24,31 @@ public class GestorFeria {
         this(new Validadores());
     }
 
-    public void registrarEmprendedorConProductos(String nombre, String id, String telefono, 
+    public List<Emprendedor> getEmprendedores() {
+    return emprendedores;
+}
+
+public void setEmprendedores(List<Emprendedor> emprendedores) {
+    this.emprendedores = emprendedores;
+}
+
+public List<Producto> getProductos() {
+    return productos;
+}
+
+public void setProductos(List<Producto> productos) {
+    this.productos = productos;
+}
+
+public List<Venta> getVentas() {
+    return ventas;
+}
+
+public void setVentas(List<Venta> ventas) {
+    this.ventas = ventas;
+}
+
+    public void registrarEmprendedorConProductos(String nombre, String id, String telefono,
                                                    String email, String categoria, 
                                                    List<String> nombresProductos, 
                                                    List<Double> precios, 
@@ -42,7 +66,7 @@ public class GestorFeria {
         }
 
         for (int i = 0; i < nombresProductos.size(); i++) {
-            Producto p = new Producto(nombresProductos.get(i), precios.get(i), stocks.get(i), categoria, id);
+            Producto p = new Producto(nombresProductos.get(i), precios.get(i), stocks.get(i), e);
             e.agregarProducto(p);
             productos.add(p);
         }
@@ -55,7 +79,7 @@ public class GestorFeria {
 
         Producto productoEncontrado = null;
         for (Producto p : productos) {
-            if (p.nombre.equals(prodNombre) && p.emprendedorId.equals(empId)) {
+            if (p.getNombre().equals(prodNombre) && p.getEmprendedor().getId().equals(empId)) {
                 productoEncontrado = p;
                 break;
             }
@@ -66,7 +90,7 @@ public class GestorFeria {
             return;
         }
 
-        if (productoEncontrado.stock < cantidad) {
+        if (productoEncontrado.getStock() < cantidad) {
             System.out.println("Stock insuficiente");
             return;
         }
@@ -74,15 +98,15 @@ public class GestorFeria {
         Venta v = new Venta(idVenta, empId, prodNombre, cantidad, precio, fecha);
         ventas.add(v);
 
-        productoEncontrado.stock -= cantidad;
+        productoEncontrado.setStock(productoEncontrado.getStock() - cantidad);
 
-        System.out.println("Venta registrada. Nuevo stock: " + productoEncontrado.stock);
+        System.out.println("Venta registrada. Nuevo stock: " + productoEncontrado.getStock());
     }
 
     public List<Emprendedor> getEmprendedoresConStockBajo() {
         List<Emprendedor> resultado = new ArrayList<>();
         for (Emprendedor e : emprendedores) {
-            for (Producto p : e.prods) {
+            for (Producto p : e.getProductos()) {
                 if (p.hayStockBajo()) {
                     resultado.add(e);
                     break;
@@ -95,11 +119,11 @@ public class GestorFeria {
     public void procesarVentasPendientesYCobrar() {
         double totalRecaudado = 0;
         for (Venta v : ventas) {
-            if (!v.pagoRealizado) {
+            if (!v.isPagoRealizado()) {
                 double monto = v.calcularTotalConDescuento();
                 totalRecaudado += monto;
-                v.pagoRealizado = true;
-                System.out.println("Cobrada venta " + v.idVenta + " por $" + monto);
+                v.setPagoRealizado(true);
+                System.out.println("Cobrada venta " + v.getIdVenta() + " por $" + monto);
             }
         }
         System.out.println("Total recaudado: $" + totalRecaudado);

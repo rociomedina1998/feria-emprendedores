@@ -54,9 +54,9 @@ public class Validadores implements IValidadorEmprendedor {
 
     public static boolean validarEmprendedorCompleto(Emprendedor e) {
         if (e == null) return false;
-        if (!nombreValido(e.n)) return false;
-        if (!emailValido(e.m)) return false;
-        if (!telefonoValido(e.t)) return false;
-        return categoriaPermitida(e.cat);
+        if (!nombreValido(e.getNombre())) return false;
+        if (!emailValido(e.getEmail())) return false;
+        if (!telefonoValido(e.getTelefono())) return false;
+        return categoriaPermitida(e.getCategoria());
     }
 }
