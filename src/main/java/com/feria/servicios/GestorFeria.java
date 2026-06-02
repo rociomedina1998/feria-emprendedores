@@ -6,15 +6,39 @@ import java.util.List;
 
 public class GestorFeria {
 
-    public List<Emprendedor> emprendedores;
-    public List<Producto> productos;
-    public List<Venta> ventas;
+    private List<Emprendedor> emprendedores;
+    private List<Producto> productos;
+    private List<Venta> ventas;
 
     public GestorFeria() {
         emprendedores = new ArrayList<>();
         productos = new ArrayList<>();
         ventas = new ArrayList<>();
     }
+
+    public List<Emprendedor> getEmprendedores() {
+    return emprendedores;
+}
+
+public void setEmprendedores(List<Emprendedor> emprendedores) {
+    this.emprendedores = emprendedores;
+}
+
+public List<Producto> getProductos() {
+    return productos;
+}
+
+public void setProductos(List<Producto> productos) {
+    this.productos = productos;
+}
+
+public List<Venta> getVentas() {
+    return ventas;
+}
+
+public void setVentas(List<Venta> ventas) {
+    this.ventas = ventas;
+}
 
     public void registrarEmprendedorConProductos(String nombre, String id, String telefono, 
                                                    String email, String categoria, 
