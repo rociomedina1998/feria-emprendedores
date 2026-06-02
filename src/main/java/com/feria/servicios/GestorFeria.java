@@ -125,7 +125,7 @@ public void setVentas(List<Venta> ventas) {
     private List<Venta> obtenerVentasPendientes() {
         List<Venta> pendientes = new ArrayList<>();
         for (Venta v : ventas) {
-            if (!v.pagoRealizado) {
+            if (!v.isPagoRealizado()) {
                 pendientes.add(v);
             }
         }
@@ -137,8 +137,8 @@ public void setVentas(List<Venta> ventas) {
         for (Venta v : ventasACobrar) {
             double monto = v.calcularTotalConDescuento();
             totalRecaudado += monto;
-            v.pagoRealizado = true;
-            System.out.println("Cobrada venta " + v.idVenta + " por $" + monto);
+            v.setPagoRealizado(true);
+            System.out.println("Cobrada venta " + v.getId() + " por $" + monto);
         }
         return totalRecaudado;
     }
