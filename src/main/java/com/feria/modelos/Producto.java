@@ -8,7 +8,7 @@ public class Producto {
     private double precio;
     private int stock;
     private Emprendedor emprendedor;
-    
+
 
     public Producto(String nombre, double precio, int stock, Emprendedor emprendedor) {
         this.nombre = nombre;
@@ -18,30 +18,30 @@ public class Producto {
     }
 
     public String getNombre() {
-    return nombre;
-}
+        return nombre;
+    }
 
-public void setNombre(String nombre) {
-    this.nombre = nombre;
-}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-public double getPrecio() {
-    return precio;
-}
+    public double getPrecio() {
+        return precio;
+    }
 
-public void setPrecio(double precio) {
-    this.precio = precio;
-}
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
 
-public int getStock() {
-    return stock;
-}
+    public int getStock() {
+        return stock;
+    }
 
-public void setStock(int stock) {
-    this.stock = stock;
-}
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
- public Emprendedor getEmprendedor() {
+    public Emprendedor getEmprendedor() {
         return emprendedor;
     }
 
@@ -53,19 +53,11 @@ public void setStock(int stock) {
         return precio * stock;
     }
 
-
     public String mostrar() {
         return nombre + " - $" + precio + " (stock: " + stock + ")";
     }
 
-
     public boolean hayStockBajo() {
-        if (stock < 5) {
-            return true;
-        }
-        return false;
+        return stock < 5;
     }
-    
-
-
-  
+}

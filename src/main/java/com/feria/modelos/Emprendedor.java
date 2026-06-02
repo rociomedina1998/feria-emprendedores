@@ -1,16 +1,17 @@
 package com.feria.modelos;
 
+import com.feria.utils.Validadores;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Emprendedor {
 
-    private String nombre;      
+    private String nombre;
     private String id;
-    private String telefono;    
+    private String telefono;
     private String email;
-    private String categoria;   
+    private String categoria;
 
     private List<Producto> productos;
 
@@ -78,13 +79,22 @@ public void setProductos(List<Producto> productos) {
     info += "Contacto: " + telefono + " | " + email + "\n";
     info += "Categoría: " + categoria + "\n";
 
+        if (!Validadores.nombreValido(nombre)) {
+            info += "NOMBRE DEMASIADO CORTO\n";
+        }
+        if (!Validadores.emailValido(email)) {
+            info += "EMAIL INVALIDO\n";
+        }
+        if (!Validadores.categoriaPermitida(categoria)) {
+            info += "CATEGORIA DESCONOCIDA\n";
+        }
     if (!validarCompleto()) {
-        info += "⚠️ Datos inválidos\n";
+        info += "Datos invalidos\n";
     }
 
     info += "Productos:\n";
     for (Producto p : productos) {
-        info += "  - " + p.nombre + " ($" + p.precio + ")\n";
+        info += "  - " + p.getNombre() + " ($" + p.getPrecio() + ")\n";
     }
 
     return info;
@@ -92,28 +102,19 @@ public void setProductos(List<Producto> productos) {
 
 
     public boolean validarCompleto() {
-        boolean valido = true;
-        if (nombre == null || nombre.length() < 2) valido = false;
-        if (email == null || !email.contains("@")) valido = false;
-        if (categoria == null || (!categoria.equals("comida") && !categoria.equals("artesania") && 
-                           !categoria.equals("tecnologia") && !categoria.equals("ropa"))) valido = false;
-        return valido;
+        return Validadores.validarEmprendedorCompleto(this);
     }
 
-
-    public String getNombre() {
-        return nombre;
-    }
 
     public void agregarProducto(Producto p) {
         productos.add(p);
     }
 
 
-    public int calcularValorTotalStock() {
-        int total = 0;
+    public double calcularValorTotalStock() {
+        double total = 0;
         for (Producto p : productos) {
-            total += p.precio * p.stock;
+            total += p.getPrecio() * p.getStock();
         }
         return total;
     }

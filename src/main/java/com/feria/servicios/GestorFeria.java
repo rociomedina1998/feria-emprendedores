@@ -1,19 +1,27 @@
 package com.feria.servicios;
 
 import com.feria.modelos.*;
+import com.feria.utils.IValidadorEmprendedor;
+import com.feria.utils.Validadores;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorFeria {
 
+    private final IValidadorEmprendedor validador;
     private List<Emprendedor> emprendedores;
     private List<Producto> productos;
     private List<Venta> ventas;
 
-    public GestorFeria() {
+    public GestorFeria(IValidadorEmprendedor validador) {
+        this.validador = validador;
         emprendedores = new ArrayList<>();
         productos = new ArrayList<>();
         ventas = new ArrayList<>();
+    }
+
+    public GestorFeria() {
+        this(new Validadores());
     }
 
     public List<Emprendedor> getEmprendedores() {
@@ -40,7 +48,7 @@ public void setVentas(List<Venta> ventas) {
     this.ventas = ventas;
 }
 
-    public void registrarEmprendedorConProductos(String nombre, String id, String telefono, 
+    public void registrarEmprendedorConProductos(String nombre, String id, String telefono,
                                                    String email, String categoria, 
                                                    List<String> nombresProductos, 
                                                    List<Double> precios, 
@@ -48,17 +56,17 @@ public void setVentas(List<Venta> ventas) {
 
         Emprendedor e = new Emprendedor(nombre, id, telefono, email, categoria);
 
-        if (nombre == null || nombre.length() < 2) {
+        if (!validador.validarNombre(nombre)) {
             System.out.println("Error: nombre inválido");
             return;
         }
-        if (email == null || !email.contains("@")) {
+        if (!validador.validarEmail(email)) {
             System.out.println("Error: email inválido");
             return;
         }
 
         for (int i = 0; i < nombresProductos.size(); i++) {
-            Producto p = new Producto(nombresProductos.get(i), precios.get(i), stocks.get(i), categoria, id);
+            Producto p = new Producto(nombresProductos.get(i), precios.get(i), stocks.get(i), e);
             e.agregarProducto(p);
             productos.add(p);
         }
@@ -71,7 +79,7 @@ public void setVentas(List<Venta> ventas) {
 
         Producto productoEncontrado = null;
         for (Producto p : productos) {
-            if (p.nombre.equals(prodNombre) && p.emprendedorId.equals(empId)) {
+            if (p.getNombre().equals(prodNombre) && p.getEmprendedor().getId().equals(empId)) {
                 productoEncontrado = p;
                 break;
             }
@@ -82,7 +90,7 @@ public void setVentas(List<Venta> ventas) {
             return;
         }
 
-        if (productoEncontrado.stock < cantidad) {
+        if (productoEncontrado.getStock() < cantidad) {
             System.out.println("Stock insuficiente");
             return;
         }
@@ -90,15 +98,15 @@ public void setVentas(List<Venta> ventas) {
         Venta v = new Venta(idVenta, empId, prodNombre, cantidad, precio, fecha);
         ventas.add(v);
 
-        productoEncontrado.stock -= cantidad;
+        productoEncontrado.setStock(productoEncontrado.getStock() - cantidad);
 
-        System.out.println("Venta registrada. Nuevo stock: " + productoEncontrado.stock);
+        System.out.println("Venta registrada. Nuevo stock: " + productoEncontrado.getStock());
     }
 
     public List<Emprendedor> getEmprendedoresConStockBajo() {
         List<Emprendedor> resultado = new ArrayList<>();
         for (Emprendedor e : emprendedores) {
-            for (Producto p : e.prods) {
+            for (Producto p : e.getProductos()) {
                 if (p.hayStockBajo()) {
                     resultado.add(e);
                     break;
@@ -111,11 +119,11 @@ public void setVentas(List<Venta> ventas) {
     public void procesarVentasPendientesYCobrar() {
         double totalRecaudado = 0;
         for (Venta v : ventas) {
-            if (!v.pagoRealizado) {
+            if (!v.isPagoRealizado()) {
                 double monto = v.calcularTotalConDescuento();
                 totalRecaudado += monto;
-                v.pagoRealizado = true;
-                System.out.println("Cobrada venta " + v.idVenta + " por $" + monto);
+                v.setPagoRealizado(true);
+                System.out.println("Cobrada venta " + v.getIdVenta() + " por $" + monto);
             }
         }
         System.out.println("Total recaudado: $" + totalRecaudado);

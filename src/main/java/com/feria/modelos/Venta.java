@@ -97,9 +97,9 @@ public void setPagoRealizado(boolean pagoRealizado) {
 
     public void actualizarStock(Producto p) {
         if (p != null) {
-            p.stock = p.stock - this.cantidad;
+            p.setStock(p.getStock() - this.cantidad);
+            System.out.println("Stock actualizado: " + p.getStock());
         }
-        System.out.println("Stock actualizado: " + p.stock);
     }
 
     public String generarRecibo() {
