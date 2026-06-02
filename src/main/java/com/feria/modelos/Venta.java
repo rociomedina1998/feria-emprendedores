@@ -2,7 +2,7 @@ package com.feria.modelos;
 
 public class Venta {
 
-    private String idVenta;
+    private String id;
     private String emprendedorId;
     private String productoNombre;
     private int cantidad;
@@ -10,8 +10,8 @@ public class Venta {
     private String fecha;
     private boolean pagoRealizado;
 
-    public Venta(String idVenta, String emprendedorId, String productoNombre, int cantidad, double precioUnitario, String fecha) {
-        this.idVenta = idVenta;
+    public Venta(String id, String emprendedorId, String productoNombre, int cantidad, double precioUnitario, String fecha) {
+        this.id = id;
         this.emprendedorId = emprendedorId;
         this.productoNombre = productoNombre;
         this.cantidad = cantidad;
@@ -20,12 +20,12 @@ public class Venta {
         this.pagoRealizado = false;
     }
 
-    public String getIdVenta() {
-    return idVenta;
-}
+    public String getId() {
+        return id;
+    }
 
-public void setIdVenta(String idVenta) {
-    this.idVenta = idVenta;
+public void setId(String id) {
+    this.id = id;
 }
 
 public String getEmprendedorId() {
@@ -104,7 +104,7 @@ public void setPagoRealizado(boolean pagoRealizado) {
 
     public String generarRecibo() {
         String recibo = "=== RECIBO DE VENTA ===\n";
-        recibo += "Venta ID: " + idVenta + "\n";
+        recibo += "Venta ID: " + id + "\n";
         recibo += "Fecha: " + fecha + "\n";
         recibo += "Producto: " + productoNombre + "\n";
         recibo += "Cantidad: " + cantidad + "\n";

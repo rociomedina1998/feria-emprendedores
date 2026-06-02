@@ -117,15 +117,29 @@ public void setVentas(List<Venta> ventas) {
     }
 
     public void procesarVentasPendientesYCobrar() {
-        double totalRecaudado = 0;
+        List<Venta> pendientes = obtenerVentasPendientes();
+        double totalRecaudado = cobrarVentas(pendientes);
+        System.out.println("Total recaudado: $" + totalRecaudado);
+    }
+
+    private List<Venta> obtenerVentasPendientes() {
+        List<Venta> pendientes = new ArrayList<>();
         for (Venta v : ventas) {
             if (!v.isPagoRealizado()) {
-                double monto = v.calcularTotalConDescuento();
-                totalRecaudado += monto;
-                v.setPagoRealizado(true);
-                System.out.println("Cobrada venta " + v.getIdVenta() + " por $" + monto);
+                pendientes.add(v);
             }
         }
-        System.out.println("Total recaudado: $" + totalRecaudado);
+        return pendientes;
+    }
+
+    private double cobrarVentas(List<Venta> ventasACobrar) {
+        double totalRecaudado = 0;
+        for (Venta v : ventasACobrar) {
+            double monto = v.calcularTotalConDescuento();
+            totalRecaudado += monto;
+            v.setPagoRealizado(true);
+            System.out.println("Cobrada venta " + v.getId() + " por $" + monto);
+        }
+        return totalRecaudado;
     }
 }

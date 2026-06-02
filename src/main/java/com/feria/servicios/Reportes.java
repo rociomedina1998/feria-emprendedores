@@ -17,16 +17,6 @@ public class Reportes {
         return reporte;
     }
 
-    public String generarReportePorCategoriaAlternativo(GestorFeria gestor, String cat) {
-        String resultado = "REPORTE CATEGORIA " + cat + "\n";
-        for (Emprendedor e : gestor.getEmprendedores()) {
-            if (e.getCategoria().equals(cat)) {
-                resultado += e.getNombre() + "\n";
-            }
-        }
-        return resultado;
-    }
-
     public double calcularVentasTotales(GestorFeria gestor) {
         double total = 0;
         for (Venta v : gestor.getVentas()) {
