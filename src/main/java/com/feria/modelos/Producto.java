@@ -60,4 +60,8 @@ public class Producto {
     public boolean hayStockBajo() {
         return stock < 5;
     }
+
+    public boolean tieneStockSuficiente(int cantidadSolicitada) {
+    return stock >= cantidadSolicitada;
+    }
 }
