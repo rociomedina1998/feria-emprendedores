@@ -10,7 +10,11 @@ public class Venta {
     private String fecha;
     private boolean pagoRealizado;
 
-    public Venta(String id, String emprendedorId, String productoNombre, int cantidad, double precioUnitario, String fecha) {
+    private EstrategiaDescuento estrategiaDescuento;
+
+    public Venta(String id, String emprendedorId, String productoNombre,
+                 int cantidad, double precioUnitario, String fecha) {
+
         this.id = id;
         this.emprendedorId = emprendedorId;
         this.productoNombre = productoNombre;
@@ -18,76 +22,73 @@ public class Venta {
         this.precioUnitario = precioUnitario;
         this.fecha = fecha;
         this.pagoRealizado = false;
+
+        this.estrategiaDescuento = new DescuentoEstandar();
     }
 
     public String getId() {
         return id;
     }
 
-public void setId(String id) {
-    this.id = id;
-}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-public String getEmprendedorId() {
-    return emprendedorId;
-}
+    public String getEmprendedorId() {
+        return emprendedorId;
+    }
 
-public void setEmprendedorId(String emprendedorId) {
-    this.emprendedorId = emprendedorId;
-}
+    public void setEmprendedorId(String emprendedorId) {
+        this.emprendedorId = emprendedorId;
+    }
 
-public String getProductoNombre() {
-    return productoNombre;
-}
+    public String getProductoNombre() {
+        return productoNombre;
+    }
 
-public void setProductoNombre(String productoNombre) {
-    this.productoNombre = productoNombre;
-}
+    public void setProductoNombre(String productoNombre) {
+        this.productoNombre = productoNombre;
+    }
 
-public int getCantidad() {
-    return cantidad;
-}
+    public int getCantidad() {
+        return cantidad;
+    }
 
-public void setCantidad(int cantidad) {
-    this.cantidad = cantidad;
-}
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
-public double getPrecioUnitario() {
-    return precioUnitario;
-}
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
 
-public void setPrecioUnitario(double precioUnitario) {
-    this.precioUnitario = precioUnitario;
-}
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 
-public String getFecha() {
-    return fecha;
-}
+    public String getFecha() {
+        return fecha;
+    }
 
-public void setFecha(String fecha) {
-    this.fecha = fecha;
-}
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 
-public boolean isPagoRealizado() {
-    return pagoRealizado;
-}
+    public boolean isPagoRealizado() {
+        return pagoRealizado;
+    }
 
-public void setPagoRealizado(boolean pagoRealizado) {
-    this.pagoRealizado = pagoRealizado;
-}
+    public void setPagoRealizado(boolean pagoRealizado) {
+        this.pagoRealizado = pagoRealizado;
+    }
+
+    public void setEstrategiaDescuento(EstrategiaDescuento estrategiaDescuento) {
+        this.estrategiaDescuento = estrategiaDescuento;
+    }
 
     public double calcularTotalConDescuento() {
         double total = cantidad * precioUnitario;
-
-        if (cantidad > 10) {
-            total = total * 0.9;
-        }
-
-        if (total > 5000) {
-            total = total * 0.95;
-        }
-
-        return total;
+        return estrategiaDescuento.calcularDescuento(total, cantidad);
     }
 
     public void registrarPago(Producto p) {

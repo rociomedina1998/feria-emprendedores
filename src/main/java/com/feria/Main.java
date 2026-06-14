@@ -38,5 +38,20 @@ public class Main {
 
         System.out.println("Emprendedor Ana válido? " + Validadores.validarEmprendedorCompleto(gestor.getEmprendedores().get(0)));
         System.out.println(gestor.getEmprendedores().get(0).mostrarInfo());
+
+        Venta ventaPrueba = new Venta(
+    "V003",
+    "E001",
+    "Empanadas",
+    20,
+    500.0,
+    "2026-05-12"
+);
+
+System.out.println("Con descuento: $" + ventaPrueba.calcularTotalConDescuento());
+
+ventaPrueba.setEstrategiaDescuento(new SinDescuento());
+
+System.out.println("Sin descuento: $" + ventaPrueba.calcularTotalConDescuento());
     }
 }
