@@ -1,0 +1,11 @@
+com\feria\utils\Validadores.class
+com\feria\servicios\Reportes.class
+com\feria\modelos\SinDescuento.class
+com\feria\servicios\GestorFeria.class
+com\feria\modelos\Emprendedor.class
+com\feria\modelos\EstrategiaDescuento.class
+com\feria\modelos\DescuentoEstandar.class
+com\feria\modelos\Venta.class
+com\feria\Main.class
+com\feria\modelos\Producto.class
+com\feria\utils\IValidadorEmprendedor.class

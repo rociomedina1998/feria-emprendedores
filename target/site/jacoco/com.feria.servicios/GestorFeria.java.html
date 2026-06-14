@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestorFeria.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">feria-emprendedores</a> &gt; <a href="index.source.html" class="el_package">com.feria.servicios</a> &gt; <span class="el_source">GestorFeria.java</span></div><h1>GestorFeria.java</h1><pre class="source lang-java linenums">package com.feria.servicios;
+
+import com.feria.modelos.*;
+import com.feria.utils.IValidadorEmprendedor;
+import com.feria.utils.Validadores;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GestorFeria {
+
+    private final IValidadorEmprendedor validador;
+    private List&lt;Emprendedor&gt; emprendedores;
+    private List&lt;Producto&gt; productos;
+    private List&lt;Venta&gt; ventas;
+
+<span class="fc" id="L16">    public GestorFeria(IValidadorEmprendedor validador) {</span>
+<span class="fc" id="L17">        this.validador = validador;</span>
+<span class="fc" id="L18">        emprendedores = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L19">        productos = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L20">        ventas = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">    }</span>
+
+    public GestorFeria() {
+<span class="nc" id="L24">        this(new Validadores());</span>
+<span class="nc" id="L25">    }</span>
+
+    public List&lt;Emprendedor&gt; getEmprendedores() {
+<span class="fc" id="L28">    return emprendedores;</span>
+}
+
+public void setEmprendedores(List&lt;Emprendedor&gt; emprendedores) {
+<span class="nc" id="L32">    this.emprendedores = emprendedores;</span>
+<span class="nc" id="L33">}</span>
+
+public List&lt;Producto&gt; getProductos() {
+<span class="nc" id="L36">    return productos;</span>
+}
+
+public void setProductos(List&lt;Producto&gt; productos) {
+<span class="nc" id="L40">    this.productos = productos;</span>
+<span class="nc" id="L41">}</span>
+
+public List&lt;Venta&gt; getVentas() {
+<span class="nc" id="L44">    return ventas;</span>
+}
+
+public void setVentas(List&lt;Venta&gt; ventas) {
+<span class="nc" id="L48">    this.ventas = ventas;</span>
+<span class="nc" id="L49">}</span>
+
+    public void registrarEmprendedorConProductos(String nombre, String id, String telefono,
+                                                   String email, String categoria, 
+                                                   List&lt;String&gt; nombresProductos, 
+                                                   List&lt;Double&gt; precios, 
+                                                   List&lt;Integer&gt; stocks) {
+
+<span class="fc" id="L57">        Emprendedor e = new Emprendedor(nombre, id, telefono, email, categoria);</span>
+
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!validador.validarNombre(nombre)) {</span>
+<span class="nc" id="L60">            System.out.println(&quot;Error: nombre inválido&quot;);</span>
+<span class="nc" id="L61">            return;</span>
+        }
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (!validador.validarEmail(email)) {</span>
+<span class="nc" id="L64">            System.out.println(&quot;Error: email inválido&quot;);</span>
+<span class="nc" id="L65">            return;</span>
+        }
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (int i = 0; i &lt; nombresProductos.size(); i++) {</span>
+<span class="fc" id="L69">            Producto p = new Producto(nombresProductos.get(i), precios.get(i), stocks.get(i), e);</span>
+<span class="fc" id="L70">            e.agregarProducto(p);</span>
+<span class="fc" id="L71">            productos.add(p);</span>
+        }
+
+<span class="fc" id="L74">        emprendedores.add(e);</span>
+<span class="fc" id="L75">        System.out.println(&quot;Emprendedor registrado con &quot; + nombresProductos.size() + &quot; productos&quot;);</span>
+<span class="fc" id="L76">    }</span>
+
+    public void registrarVenta(String idVenta, String empId, String prodNombre, int cantidad, double precio, String fecha) {
+
+<span class="nc" id="L80">        Producto productoEncontrado = null;</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (Producto p : productos) {</span>
+<span class="nc bnc" id="L82" title="All 4 branches missed.">            if (p.getNombre().equals(prodNombre) &amp;&amp; p.getEmprendedor().getId().equals(empId)) {</span>
+<span class="nc" id="L83">                productoEncontrado = p;</span>
+<span class="nc" id="L84">                break;</span>
+            }
+<span class="nc" id="L86">        }</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (productoEncontrado == null) {</span>
+<span class="nc" id="L89">            System.out.println(&quot;Producto no encontrado&quot;);</span>
+<span class="nc" id="L90">            return;</span>
+        }
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (productoEncontrado.getStock() &lt; cantidad) {</span>
+<span class="nc" id="L94">            System.out.println(&quot;Stock insuficiente&quot;);</span>
+<span class="nc" id="L95">            return;</span>
+        }
+
+<span class="nc" id="L98">        Venta v = new Venta(idVenta, empId, prodNombre, cantidad, precio, fecha);</span>
+<span class="nc" id="L99">        ventas.add(v);</span>
+
+<span class="nc" id="L101">        productoEncontrado.setStock(productoEncontrado.getStock() - cantidad);</span>
+
+<span class="nc" id="L103">        System.out.println(&quot;Venta registrada. Nuevo stock: &quot; + productoEncontrado.getStock());</span>
+<span class="nc" id="L104">    }</span>
+
+    public List&lt;Emprendedor&gt; getEmprendedoresConStockBajo() {
+<span class="nc" id="L107">        List&lt;Emprendedor&gt; resultado = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for (Emprendedor e : emprendedores) {</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Producto p : e.getProductos()) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                if (p.hayStockBajo()) {</span>
+<span class="nc" id="L111">                    resultado.add(e);</span>
+<span class="nc" id="L112">                    break;</span>
+                }
+<span class="nc" id="L114">            }</span>
+<span class="nc" id="L115">        }</span>
+<span class="nc" id="L116">        return resultado;</span>
+    }
+
+    public void procesarVentasPendientesYCobrar() {
+<span class="nc" id="L120">        List&lt;Venta&gt; pendientes = obtenerVentasPendientes();</span>
+<span class="nc" id="L121">        double totalRecaudado = cobrarVentas(pendientes);</span>
+<span class="nc" id="L122">        System.out.println(&quot;Total recaudado: $&quot; + totalRecaudado);</span>
+<span class="nc" id="L123">    }</span>
+
+    private List&lt;Venta&gt; obtenerVentasPendientes() {
+<span class="nc" id="L126">        List&lt;Venta&gt; pendientes = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (Venta v : ventas) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (!v.isPagoRealizado()) {</span>
+<span class="nc" id="L129">                pendientes.add(v);</span>
+            }
+<span class="nc" id="L131">        }</span>
+<span class="nc" id="L132">        return pendientes;</span>
+    }
+
+    private double cobrarVentas(List&lt;Venta&gt; ventasACobrar) {
+<span class="nc" id="L136">        double totalRecaudado = 0;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (Venta v : ventasACobrar) {</span>
+<span class="nc" id="L138">            double monto = v.calcularTotalConDescuento();</span>
+<span class="nc" id="L139">            totalRecaudado += monto;</span>
+<span class="nc" id="L140">            v.setPagoRealizado(true);</span>
+<span class="nc" id="L141">            System.out.println(&quot;Cobrada venta &quot; + v.getId() + &quot; por $&quot; + monto);</span>
+<span class="nc" id="L142">        }</span>
+<span class="nc" id="L143">        return totalRecaudado;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,188 @@
+@startuml Feria de Emprendedores - Diagrama de Clases
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam class {
+    BackgroundColor White
+    BorderColor #444444
+    ArrowColor #444444
+}
+
+skinparam package {
+    BackgroundColor #F8F8F8
+    BorderColor #888888
+}
+
+' =============================================
+' PATRÓN STRATEGY - destacado en amarillo
+' =============================================
+
+package "«Patrón Strategy» Descuentos" #FFFDE7 {
+
+    interface EstrategiaDescuento <<interface>> {
+        + calcularDescuento(total: double, cantidad: int) : double
+    }
+
+    class DescuentoEstandar {
+        + calcularDescuento(total: double, cantidad: int) : double
+    }
+
+    class SinDescuento {
+        + calcularDescuento(total: double, cantidad: int) : double
+    }
+}
+
+' =============================================
+' MODELOS
+' =============================================
+
+package "com.feria.modelos" {
+
+    class Venta {
+        - id : String
+        - emprendedorId : String
+        - productoNombre : String
+        - cantidad : int
+        - precioUnitario : double
+        - fecha : String
+        - pagoRealizado : boolean
+        - estrategiaDescuento : EstrategiaDescuento
+        --
+        + calcularTotalConDescuento() : double
+        + setEstrategiaDescuento(e: EstrategiaDescuento) : void
+        + registrarPago(p: Producto) : void
+        + actualizarStock(p: Producto) : void
+        + generarRecibo() : String
+    }
+
+    class Emprendedor {
+        - nombre : String
+        - id : String
+        - telefono : String
+        - email : String
+        - categoria : String
+        - productos : List<Producto>
+        --
+        + agregarProducto(p: Producto) : void
+        + calcularValorTotalStock() : double
+        + mostrarInfo() : String
+        + validarCompleto() : boolean
+    }
+
+    class Producto {
+        - nombre : String
+        - precio : double
+        - stock : int
+        - emprendedor : Emprendedor
+        --
+        + valorTotal() : double
+        + mostrar() : String
+        + hayStockBajo() : boolean
+        + tieneStockSuficiente(cantidad: int) : boolean
+    }
+}
+
+' =============================================
+' SERVICIOS
+' =============================================
+
+package "com.feria.servicios" {
+
+    class GestorFeria {
+        - validador : IValidadorEmprendedor
+        - emprendedores : List<Emprendedor>
+        - productos : List<Producto>
+        - ventas : List<Venta>
+        --
+        + GestorFeria(validador: IValidadorEmprendedor)
+        + GestorFeria()
+        + registrarEmprendedorConProductos(...) : void
+        + registrarVenta(...) : void
+        + getEmprendedoresConStockBajo() : List<Emprendedor>
+        + procesarVentasPendientesYCobrar() : void
+    }
+
+    class Reportes {
+        + generarReportePorCategoria(gestor: GestorFeria, categoria: String) : String
+        + calcularVentasTotales(gestor: GestorFeria) : double
+        + imprimirResumenEjecutivo(gestor: GestorFeria) : void
+    }
+}
+
+' =============================================
+' UTILS
+' =============================================
+
+package "com.feria.utils" {
+
+    interface IValidadorEmprendedor <<interface>> {
+        + validarNombre(nombre: String) : boolean
+        + validarEmail(email: String) : boolean
+        + validarTelefono(telefono: String) : boolean
+        + validarCategoria(categoria: String) : boolean
+    }
+
+    class Validadores {
+        + validarNombre(nombre: String) : boolean
+        + validarEmail(email: String) : boolean
+        + validarTelefono(telefono: String) : boolean
+        + validarCategoria(categoria: String) : boolean
+        ..Métodos estáticos..
+        + {static} nombreValido(nombre: String) : boolean
+        + {static} emailValido(email: String) : boolean
+        + {static} telefonoValido(t: String) : boolean
+        + {static} categoriaPermitida(categoria: String) : boolean
+        + {static} validarEmprendedorCompleto(e: Emprendedor) : boolean
+    }
+}
+
+' =============================================
+' RELACIONES — PATRÓN STRATEGY
+' =============================================
+
+EstrategiaDescuento <|.. DescuentoEstandar : implements
+EstrategiaDescuento <|.. SinDescuento     : implements
+Venta "1" *-- "1" EstrategiaDescuento    : usa  >
+
+' =============================================
+' RELACIONES — DIP / VALIDACIÓN
+' =============================================
+
+IValidadorEmprendedor <|.. Validadores   : implements
+GestorFeria "1" *-- "1" IValidadorEmprendedor : inyectado  >
+
+' =============================================
+' RELACIONES — DOMINIO
+' =============================================
+
+GestorFeria "1" o-- "0..*" Emprendedor  : gestiona  >
+GestorFeria "1" o-- "0..*" Producto     : gestiona  >
+GestorFeria "1" o-- "0..*" Venta        : registra  >
+
+Emprendedor "1" *-- "0..*" Producto     : tiene  >
+Producto    "0..*" --> "1" Emprendedor  : pertenece a  >
+
+Reportes ..> GestorFeria                : usa  >
+
+' =============================================
+' NOTAS EXPLICATIVAS
+' =============================================
+
+note top of EstrategiaDescuento
+  <b>Patrón Strategy</b>
+  Permite intercambiar la estrategia
+  de descuento en tiempo de ejecución
+  sin modificar Venta.
+end note
+
+note right of GestorFeria
+  <b>Principio DIP</b>
+  Depende de IValidadorEmprendedor
+  (interfaz), no de Validadores
+  (implementación concreta).
+end note
+
+@enduml

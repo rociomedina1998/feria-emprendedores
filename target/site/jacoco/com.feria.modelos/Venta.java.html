@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Venta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">feria-emprendedores</a> &gt; <a href="index.source.html" class="el_package">com.feria.modelos</a> &gt; <span class="el_source">Venta.java</span></div><h1>Venta.java</h1><pre class="source lang-java linenums">package com.feria.modelos;
+
+public class Venta {
+
+    private String id;
+    private String emprendedorId;
+    private String productoNombre;
+    private int cantidad;
+    private double precioUnitario;
+    private String fecha;
+    private boolean pagoRealizado;
+
+    private EstrategiaDescuento estrategiaDescuento;
+
+    public Venta(String id, String emprendedorId, String productoNombre,
+<span class="nc" id="L16">                 int cantidad, double precioUnitario, String fecha) {</span>
+
+<span class="nc" id="L18">        this.id = id;</span>
+<span class="nc" id="L19">        this.emprendedorId = emprendedorId;</span>
+<span class="nc" id="L20">        this.productoNombre = productoNombre;</span>
+<span class="nc" id="L21">        this.cantidad = cantidad;</span>
+<span class="nc" id="L22">        this.precioUnitario = precioUnitario;</span>
+<span class="nc" id="L23">        this.fecha = fecha;</span>
+<span class="nc" id="L24">        this.pagoRealizado = false;</span>
+
+<span class="nc" id="L26">        this.estrategiaDescuento = new DescuentoEstandar();</span>
+<span class="nc" id="L27">    }</span>
+
+    public String getId() {
+<span class="nc" id="L30">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L34">        this.id = id;</span>
+<span class="nc" id="L35">    }</span>
+
+    public String getEmprendedorId() {
+<span class="nc" id="L38">        return emprendedorId;</span>
+    }
+
+    public void setEmprendedorId(String emprendedorId) {
+<span class="nc" id="L42">        this.emprendedorId = emprendedorId;</span>
+<span class="nc" id="L43">    }</span>
+
+    public String getProductoNombre() {
+<span class="nc" id="L46">        return productoNombre;</span>
+    }
+
+    public void setProductoNombre(String productoNombre) {
+<span class="nc" id="L50">        this.productoNombre = productoNombre;</span>
+<span class="nc" id="L51">    }</span>
+
+    public int getCantidad() {
+<span class="nc" id="L54">        return cantidad;</span>
+    }
+
+    public void setCantidad(int cantidad) {
+<span class="nc" id="L58">        this.cantidad = cantidad;</span>
+<span class="nc" id="L59">    }</span>
+
+    public double getPrecioUnitario() {
+<span class="nc" id="L62">        return precioUnitario;</span>
+    }
+
+    public void setPrecioUnitario(double precioUnitario) {
+<span class="nc" id="L66">        this.precioUnitario = precioUnitario;</span>
+<span class="nc" id="L67">    }</span>
+
+    public String getFecha() {
+<span class="nc" id="L70">        return fecha;</span>
+    }
+
+    public void setFecha(String fecha) {
+<span class="nc" id="L74">        this.fecha = fecha;</span>
+<span class="nc" id="L75">    }</span>
+
+    public boolean isPagoRealizado() {
+<span class="nc" id="L78">        return pagoRealizado;</span>
+    }
+
+    public void setPagoRealizado(boolean pagoRealizado) {
+<span class="nc" id="L82">        this.pagoRealizado = pagoRealizado;</span>
+<span class="nc" id="L83">    }</span>
+
+    public void setEstrategiaDescuento(EstrategiaDescuento estrategiaDescuento) {
+<span class="nc" id="L86">        this.estrategiaDescuento = estrategiaDescuento;</span>
+<span class="nc" id="L87">    }</span>
+
+    public double calcularTotalConDescuento() {
+<span class="nc" id="L90">        double total = cantidad * precioUnitario;</span>
+<span class="nc" id="L91">        return estrategiaDescuento.calcularDescuento(total, cantidad);</span>
+    }
+
+    public void registrarPago(Producto p) {
+<span class="nc" id="L95">        this.pagoRealizado = true;</span>
+<span class="nc" id="L96">        System.out.println(&quot;Pago registrado&quot;);</span>
+<span class="nc" id="L97">    }</span>
+
+    public void actualizarStock(Producto p) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (p != null) {</span>
+<span class="nc" id="L101">            p.setStock(p.getStock() - this.cantidad);</span>
+<span class="nc" id="L102">            System.out.println(&quot;Stock actualizado: &quot; + p.getStock());</span>
+        }
+<span class="nc" id="L104">    }</span>
+
+    public String generarRecibo() {
+<span class="nc" id="L107">        String recibo = &quot;=== RECIBO DE VENTA ===\n&quot;;</span>
+<span class="nc" id="L108">        recibo += &quot;Venta ID: &quot; + id + &quot;\n&quot;;</span>
+<span class="nc" id="L109">        recibo += &quot;Fecha: &quot; + fecha + &quot;\n&quot;;</span>
+<span class="nc" id="L110">        recibo += &quot;Producto: &quot; + productoNombre + &quot;\n&quot;;</span>
+<span class="nc" id="L111">        recibo += &quot;Cantidad: &quot; + cantidad + &quot;\n&quot;;</span>
+<span class="nc" id="L112">        recibo += &quot;Precio unitario: $&quot; + precioUnitario + &quot;\n&quot;;</span>
+<span class="nc" id="L113">        recibo += &quot;Total con descuentos: $&quot; + calcularTotalConDescuento() + &quot;\n&quot;;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        recibo += &quot;Pago: &quot; + (pagoRealizado ? &quot;Realizado&quot; : &quot;Pendiente&quot;) + &quot;\n&quot;;</span>
+<span class="nc" id="L115">        return recibo;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

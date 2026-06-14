@@ -1,3 +1,5 @@
+package com.feria.modelos;
+
 public class SinDescuento implements EstrategiaDescuento {
 
     @Override
